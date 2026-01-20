@@ -49,8 +49,8 @@ def parse_args(argv: Iterable[str]) -> argparse.Namespace:
         description="Scan for JPG images and write a text inventory.")
     parser.add_argument(
         "--output",
-        default="jpg_inventory.txt",
-        help="Output text file path (default: jpg_inventory.txt)",
+        default=r"C:\temp\jpg_inventory.txt",
+        help="Output text file path (default: C:\\temp\\jpg_inventory.txt)",
     )
     parser.add_argument(
         "--roots",
@@ -71,13 +71,17 @@ def main(argv: Iterable[str]) -> int:
     include_jpeg = not args.jpg_only
 
     count = 0
-    with open(args.output, "w", encoding="utf-8", newline="\n") as f:
+    output_path = args.output
+    output_dir = os.path.dirname(output_path)
+    if output_dir:
+        os.makedirs(output_dir, exist_ok=True)
+    with open(output_path, "w", encoding="utf-8", newline="\n") as f:
         f.write("directory\tfilename\tsize_bytes\n")
         for directory, filename, size in iter_image_files(roots, include_jpeg):
             f.write(f"{directory}\t{filename}\t{size}\n")
             count += 1
 
-    print(f"Wrote {count} records to {args.output}")
+    print(f"Wrote {count} records to {output_path}")
     return 0
 
 
