@@ -1,0 +1,1 @@
+Necesito una aplicacione en python que me busque todos los archivos jpg que tengo en mi maquina, debe generar un archivo de text con directorio, nombre de la imagen, tamaño
